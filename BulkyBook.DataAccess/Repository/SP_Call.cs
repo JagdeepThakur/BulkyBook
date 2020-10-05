@@ -17,10 +17,8 @@ namespace BulkyBook.DataAccess.Repository
         private static string ConnectionString = "";
         public SP_Call(ApplicationDbContext dbContext)
         {
-            dbContext = _db;
-            ConnectionString = dbContext.Database.GetDbConnection().ConnectionString;
-
-
+            _db = dbContext;
+            ConnectionString = _db.Database.GetDbConnection().ConnectionString;
         }
         public void Dispose()
         {
