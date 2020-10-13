@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BulkyBook.DataAccess.Repository.IRepository;
+using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -24,6 +25,44 @@ namespace BulkyBook.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult Upsert(int? id)
+        {
+            Category category = new Category();
+            //Create
+            if (id == null)
+            {
+                return View(category);
+            }
+            //edit
+            category = _unitOfWork.Category.Get(id.GetValueOrDefault());
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                if (category.ID == 0)
+                {
+                    _unitOfWork.Category.Add(category);
+                }
+                else
+                {
+                    _unitOfWork.Category.Update(category);
+                }
+                _unitOfWork.Save();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(category);
+        }
+
         #region API Calls
 
         [HttpGet]
@@ -33,6 +72,18 @@ namespace BulkyBook.Areas.Admin.Controllers
             return Json(new { data = categories });
         }
 
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var objFromdb = _unitOfWork.Category.Get(id);
+            if (objFromdb == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            _unitOfWork.Category.Remove(id);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Delete Successful" });
+        }
         #endregion
     }
 }

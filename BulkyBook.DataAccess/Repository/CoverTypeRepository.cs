@@ -8,21 +8,20 @@ using System.Text;
 
 namespace BulkyBook.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CoverTypeRepository : Repository<CoverType>, ICoverTypeRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public CategoryRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public CoverTypeRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _db = dbContext;
         }
-
-        public void Update(Category category)
+        public void Update(CoverType coverType)
         {
-            var objFromDb = _db.Categories.FirstOrDefault(s => s.ID == category.ID);
+            var objFromDb = _db.CoverType.FirstOrDefault(ct => ct.ID == coverType.ID);
             if (objFromDb != null)
             {
-                objFromDb.Name = category.Name;
+                objFromDb.Name = coverType.Name;
             }
         }
     }
