@@ -17,12 +17,15 @@ namespace BulkyBook.DataAccess.Repository
 
         public ICoverTypeRepository CoverType { get; private set; }
 
+        public IProductRepository Product { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db)
         {
             dbContext = db;
             Category = new CategoryRepository(dbContext);
             SP_Call = new SP_Call(dbContext);
             CoverType = new CoverTypeRepository(dbContext);
+            Product = new ProductRepository(dbContext);
         }
 
         public void Dispose()
