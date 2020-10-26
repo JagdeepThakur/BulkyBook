@@ -19,6 +19,10 @@ namespace BulkyBook.DataAccess.Repository
 
         public IProductRepository Product { get; private set; }
 
+        public ICompanyRepository Company { get; private set; }
+
+        public IApplicationUserRepository ApplicationUser { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db)
         {
             dbContext = db;
@@ -26,6 +30,8 @@ namespace BulkyBook.DataAccess.Repository
             SP_Call = new SP_Call(dbContext);
             CoverType = new CoverTypeRepository(dbContext);
             Product = new ProductRepository(dbContext);
+            Company = new CompanyRepository(dbContext);
+            ApplicationUser = new ApplicationUserRepository(dbContext);
         }
 
         public void Dispose()
