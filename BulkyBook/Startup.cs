@@ -48,12 +48,12 @@ namespace BulkyBook
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
             services.AddAuthentication().AddFacebook(options => {
-                options.AppId = "904776643383836";
-                options.AppSecret = "4f2574a2b1452e420cb5a1520835bf2f";
+                options.AppId = "";
+                options.AppSecret = "";
             });
             services.AddAuthentication().AddGoogle(options => {
-                options.ClientId = "6912295509-cgb67bjqg21e8gfotnaq3c6q49oq6bp7.apps.googleusercontent.com";
-                options.ClientSecret = "LEQrDGcarejflFx3V4ea164Z";
+                options.ClientId = "";
+                options.ClientSecret = "";
             });
         }
 
