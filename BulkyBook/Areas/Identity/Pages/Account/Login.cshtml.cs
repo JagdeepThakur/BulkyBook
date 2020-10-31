@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using BulkyBook.DataAccess.Repository.IRepository;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Http;
+using BulkyBook.Utility;
 
 namespace BulkyBook.Areas.Identity.Pages.Account
 {
@@ -91,6 +93,10 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Email == Input.Email);
+                    var count = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserID == user.Id).Count();
+                    HttpContext.Session.SetInt32(StaticData.ssShoppingCart, count);
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

@@ -23,6 +23,12 @@ namespace BulkyBook.DataAccess.Repository
 
         public IApplicationUserRepository ApplicationUser { get; private set; }
 
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+
+        public IOrderHeaderRepository OrderHeader { get; private set; }
+
+        public IOrderDetailsRepository OrderDetails { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db)
         {
             dbContext = db;
@@ -32,6 +38,9 @@ namespace BulkyBook.DataAccess.Repository
             Product = new ProductRepository(dbContext);
             Company = new CompanyRepository(dbContext);
             ApplicationUser = new ApplicationUserRepository(dbContext);
+            ShoppingCart = new ShoppingCartRepository(dbContext);
+            OrderHeader = new OrderHeaderRepository(dbContext);
+            OrderDetails = new OrderDetailsRepository(dbContext);
         }
 
         public void Dispose()
