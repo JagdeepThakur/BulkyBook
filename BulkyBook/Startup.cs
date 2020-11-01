@@ -16,6 +16,7 @@ using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using BulkyBook.Utility;
+using Stripe;
 
 namespace BulkyBook
 {
@@ -38,15 +39,23 @@ namespace BulkyBook
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton<IEmailSender, EmailSender>();
+
+            //Send Grid and Stripe Injection
             services.Configure<EmailOption>(Configuration);
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+
             services.AddRazorPages();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //Authorization
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = $"/Identity/Account/Login";
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
+
+            //Login and Register using Facebook and Google
             services.AddAuthentication().AddFacebook(options => {
                 options.AppId = "";
                 options.AppSecret = "";
@@ -55,6 +64,8 @@ namespace BulkyBook
                 options.ClientId = "";
                 options.ClientSecret = "";
             });
+
+            //Added session in project
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -84,6 +95,8 @@ namespace BulkyBook
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["Secretkey"];
 
             app.UseEndpoints(endpoints =>
             {
