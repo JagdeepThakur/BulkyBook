@@ -192,7 +192,6 @@ namespace BulkyBook.Areas.Customer.Controllers
             _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
             _unitOfWork.Save();
 
-            List<OrderDetails> orderDetailList = new List<OrderDetails>();
             foreach (var item in ShoppingCartVM.ListCarts)
             {
                 item.Price = StaticData.GetPriceBasedOnQuantity(item.Count, item.Product.Price, item.Product.Price50, item.Product.Price100);
@@ -231,13 +230,13 @@ namespace BulkyBook.Areas.Customer.Controllers
                 var service = new ChargeService();
                 Charge charge = service.Create(options);
 
-                if (charge.BalanceTransactionId == null)
+                if (charge.Id == null)
                 {
                     ShoppingCartVM.OrderHeader.PaymentStatus = StaticData.PaymentStatusRejected;
                 }
                 else 
                 {
-                    ShoppingCartVM.OrderHeader.TransactionID = charge.BalanceTransactionId;
+                    ShoppingCartVM.OrderHeader.TransactionID = charge.Id;
                 }
                 if (charge.Status.ToLower() == "succeeded")
                 {

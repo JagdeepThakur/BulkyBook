@@ -58,6 +58,18 @@
                                 </div>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                                @if (User.IsInRole(StaticData.Role_Employee) || User.IsInRole(StaticData.Role_Admin))
+                                {
+                                    <span>Manage Orders</span>
+                                }
+                                else
+                                {
+                                    <span>Order History</span>
+                                }
+                            </a>
+                        </li>
                         @if (HttpContextAccessor.HttpContext.Session.GetInt32(StaticData.ssShoppingCart) != null)
                         {
                             <li style="color:white;">
