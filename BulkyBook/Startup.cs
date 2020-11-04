@@ -35,7 +35,7 @@ namespace BulkyBook
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("BulkyBook")));
-            services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+            services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultUI().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton<IEmailSender, EmailSender>();

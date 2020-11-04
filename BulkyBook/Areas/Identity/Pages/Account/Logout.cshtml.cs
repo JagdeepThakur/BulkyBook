@@ -33,6 +33,9 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             HttpContext.Session.SetInt32(StaticData.ssShoppingCart, 0);
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+
+            HttpContext.Session.Clear();
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
